@@ -19,7 +19,10 @@ pub struct TelnetSession {
 impl TelnetSession {
     pub async fn new(site: SiteConfig) -> Result<Self> {
         let (host, port) = if let Some((host, port)) = site.url.rsplit_once(':') {
-            (host.to_string(), port.parse::<u16>().unwrap_or(23))
+            let parsed_port = port
+                .parse::<u16>()
+                .map_err(|_| anyhow::anyhow!("Invalid port in site URL: {}", site.url))?;
+            (host.to_string(), parsed_port)
         } else {
             (site.url.clone(), 23)
         };

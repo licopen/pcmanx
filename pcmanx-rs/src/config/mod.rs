@@ -241,7 +241,7 @@ impl Default for HotkeyConfig {
             key_paste1: "<Ctrl><Shift>V".to_string(),
             key_paste_clipboard: "<Shift>Insert".to_string(),
             key_emotions: "<Ctrl>Return".to_string(),
-            key_fullscreen: "<ALT>Return".to_string(),
+            key_fullscreen: "<Alt>Return".to_string(),
             key_show_main_window: "<Alt>M".to_string(),
         }
     }

@@ -24,7 +24,8 @@ pub const TC_DONT: u8 = 254;
 pub const TC_IAC: u8 = 255;
 
 pub const TO_ECHO: u8 = 1;
-pub const TO_SUPRESS_GO_AHEAD: u8 = 3;
+pub const TO_SUPPRESS_GO_AHEAD: u8 = 3;
+pub const TO_SUPRESS_GO_AHEAD: u8 = TO_SUPPRESS_GO_AHEAD;
 pub const TO_TERMINAL_TYPE: u8 = 24;
 pub const TO_IS: u8 = 0;
 pub const TO_SEND: u8 = 1;

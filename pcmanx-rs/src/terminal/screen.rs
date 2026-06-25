@@ -50,7 +50,7 @@ impl ScreenBuffer {
         attr.need_update = true;
         self.cells[row][col] = TermCell { ch, attr };
 
-        let width = UnicodeWidthChar::width(ch).unwrap_or(1).max(1);
+        let width = UnicodeWidthChar::width(ch).unwrap_or(1);
         let next_col = col + width;
         if next_col >= self.cols {
             self.carriage_return();

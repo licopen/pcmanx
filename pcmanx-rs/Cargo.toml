@@ -24,5 +24,20 @@ thiserror     = "1"
 log           = "0.4"
 env_logger    = "0.11"
 
+# GTK4 UI
+gtk4         = { version = "0.9", features = ["v4_6"] }
+glib         = "0.20"
+gio          = "0.20"
+cairo-rs     = { version = "0.20", features = ["use_glib"] }
+pango        = "0.20"
+pangocairo   = "0.20"
+gdk4         = "0.9"
+
+# Async + GTK integration
+async-channel = "2"
+
+# Desktop notifications (libnotify via D-Bus)
+notify-rust  = { version = "4", default-features = false, features = ["d"] }
+
 [dev-dependencies]
 tokio         = { version = "1", features = ["full", "test-util"] }

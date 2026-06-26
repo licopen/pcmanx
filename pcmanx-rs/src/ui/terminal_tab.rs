@@ -44,15 +44,8 @@ impl TerminalTab {
         Ok(())
     }
 
-    /// Send raw bytes to the remote host.
-    pub fn send_input(&mut self, data: &[u8]) -> Result<()> {
-        // TelnetSession::send_key is async; callers must use the async variant.
-        // This synchronous wrapper exists for contexts that already have a runtime handle.
-        tokio::runtime::Handle::current().block_on(self.session.send_key(data))
-    }
-
     /// Send raw bytes to the remote host (async version).
-    pub async fn send_input_async(&mut self, data: &[u8]) -> Result<()> {
+    pub async fn send_input(&mut self, data: &[u8]) -> Result<()> {
         self.session.send_key(data).await
     }
 }

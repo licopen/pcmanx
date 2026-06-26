@@ -300,7 +300,11 @@ impl SiteEditDialog {
                 s.rows_per_page = spin_rows.value() as u32;
                 s.cols_per_page = spin_cols.value() as u32;
                 s.crlf = crlf;
-                s.proxy = Some(proxy);
+                s.proxy = if proxy.proxy_type == ProxyType::None {
+                    None
+                } else {
+                    Some(proxy)
+                };
 
                 if let Some(d) = dialog_weak.upgrade() {
                     d.close();

@@ -11,7 +11,7 @@ use crate::config::{AppConfig, SiteConfig};
 /// Replaces `sitelistdlg.cpp`.
 pub struct SiteListDialog {
     pub dialog: gtk4::Window,
-    selected: Rc<RefCell<Option<SiteConfig>>>,
+    pub selected: Rc<RefCell<Option<SiteConfig>>>,
 }
 
 impl SiteListDialog {
@@ -154,9 +154,11 @@ impl SiteListDialog {
         Self { dialog, selected }
     }
 
-    /// Present the dialog and return the chosen `SiteConfig` (if Connect was
-    /// pressed).  This does **not** run a nested main loop; callers should
-    /// connect to `dialog.connect_destroy` or use `run_future` instead.
+    /// Present the dialog.  Returns the chosen `SiteConfig` *only* if the user
+    /// already pressed Connect before this call returns (which is not typical).
+    /// The recommended pattern is to call `dialog.present()` directly and then
+    /// connect to `dialog.connect_destroy` to read `self.selected` after the
+    /// window closes.
     pub fn run(&self) -> Option<SiteConfig> {
         self.dialog.present();
         self.selected.borrow().clone()

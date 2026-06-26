@@ -86,9 +86,11 @@ impl EmojisDialog {
         Self { dialog, chosen }
     }
 
-    /// Present the dialog.  Returns the chosen emoticon string, or `None` if
-    /// the user cancelled.  Like `SiteListDialog::run`, this does not run a
-    /// nested main loop — use `dialog.connect_destroy` to observe the result.
+    /// Present the dialog.  Returns the chosen emoticon *only* if the user
+    /// already clicked one before this call returns (which is not typical).
+    /// The recommended pattern is to call `dialog.present()` directly and then
+    /// connect to `dialog.connect_destroy` to read `self.chosen` after the
+    /// window closes.
     pub fn run(&self) -> Option<String> {
         self.dialog.present();
         self.chosen.borrow().clone()

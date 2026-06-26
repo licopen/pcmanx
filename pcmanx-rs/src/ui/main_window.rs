@@ -171,6 +171,9 @@ pub fn build_ui(app: &gtk4::Application) {
                 lbl.set_text("Connected");
             }
             if let Some(lbl) = lbl_encoding_weak.upgrade() {
+                // TODO: store per-tab encoding in AppState (keyed by page index or
+                // widget pointer) rather than looking it up by page number in the
+                // sites list, which is not guaranteed to match tab order.
                 let enc = state_clone
                     .borrow()
                     .config
@@ -315,11 +318,13 @@ fn wire_toolbar_buttons(
 
             let nb_weak2 = nb.downgrade();
             let state2 = state_clone.clone();
+            let selected = dlg.selected.clone();
             dlg.dialog.connect_destroy(move |_| {
                 let Some(nb2) = nb_weak2.upgrade() else { return };
-                // Try to use the selected site from the dialog.
-                // For now, open a placeholder terminal tab.
-                let site = state2.borrow().config.sites.first().cloned()
+                // Use the site the user selected in the dialog; fall back to
+                // the first configured site, then a blank default.
+                let site = selected.borrow().clone()
+                    .or_else(|| state2.borrow().config.sites.first().cloned())
                     .unwrap_or_default();
                 let settings = DisplaySettings {
                     font_family: state2.borrow().config.display.font_family.clone(),
@@ -364,6 +369,9 @@ fn wire_toolbar_buttons(
             if let Some(nb) = notebook_weak.upgrade() {
                 if let Some(page) = nb.current_page() {
                     nb.remove_page(Some(page));
+                    // TODO: replace the Vec with a HashMap<u32, TerminalWidget>
+                    // keyed by a stable tab ID so that removal of page N doesn't
+                    // corrupt indices for pages > N.
                     let mut st = state_clone.borrow_mut();
                     if (page as usize) < st.terminal_widgets.len() {
                         st.terminal_widgets.remove(page as usize);

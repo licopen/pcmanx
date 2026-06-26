@@ -261,6 +261,9 @@ impl PreferencesDialog {
             vbox.set_margin_end(8);
 
             let h = &config.hotkeys;
+            // Each entry maps (display label, mutable field setter).
+            // HOTKEY_COUNT must equal the number of rows built here.
+            const HOTKEY_COUNT: usize = 19;
             let hotkeys = vec![
                 ("Site List", h.key_site_list.clone()),
                 ("New Connection 1", h.key_new_conn0.clone()),
@@ -310,7 +313,7 @@ impl PreferencesDialog {
             dialog.connect_destroy(move |_| {
                 let mut c = config_rc2.borrow_mut();
                 let vals: Vec<String> = entries.iter().map(|e| e.text().to_string()).collect();
-                if vals.len() >= 19 {
+                if vals.len() >= HOTKEY_COUNT {
                     c.hotkeys.key_site_list = vals[0].clone();
                     c.hotkeys.key_new_conn0 = vals[1].clone();
                     c.hotkeys.key_new_conn1 = vals[2].clone();
